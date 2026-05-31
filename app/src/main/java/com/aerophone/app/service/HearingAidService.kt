@@ -160,7 +160,11 @@ class HearingAidService : Service() {
             val intent = Intent(context, HearingAidService::class.java).apply {
                 action = ACTION_START
             }
-            context.startForegroundService(intent)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(intent)
+            } else {
+                context.startService(intent)
+            }
         }
 
         fun stopService(context: Context) {

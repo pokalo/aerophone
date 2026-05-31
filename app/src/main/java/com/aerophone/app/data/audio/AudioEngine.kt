@@ -97,7 +97,11 @@ class AudioEngine {
                 .setAudioFormat(audioFormat)
                 .setBufferSizeInBytes(bufferSize)
                 .setTransferMode(AudioTrack.MODE_STREAM)
-                .setPerformanceMode(AudioTrack.PERFORMANCE_MODE_LOW_LATENCY)
+                .apply {
+                    if (android.os.Build.VERSION.SDK_INT >= 26) {
+                        setPerformanceMode(AudioTrack.PERFORMANCE_MODE_LOW_LATENCY)
+                    }
+                }
                 .build()
 
             audioRecord?.startRecording()
