@@ -1,4 +1,4 @@
-package com.hearassist.app.presentation
+package com.aerophone.app.presentation
 
 import android.app.Application
 import android.content.ComponentName
@@ -14,14 +14,14 @@ import android.os.Vibrator
 import android.os.VibratorManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.hearassist.app.billing.BillingResult
-import com.hearassist.app.billing.BillingService
-import com.hearassist.app.data.repository.SettingsRepository
-import com.hearassist.app.domain.model.HearingAidState
-import com.hearassist.app.domain.model.PremiumType
-import com.hearassist.app.domain.model.Preset
-import com.hearassist.app.domain.model.SleepTimerOption
-import com.hearassist.app.service.HearingAidService
+import com.aerophone.app.billing.BillingResult
+import com.aerophone.app.billing.BillingService
+import com.aerophone.app.data.repository.SettingsRepository
+import com.aerophone.app.domain.model.HearingAidState
+import com.aerophone.app.domain.model.PremiumType
+import com.aerophone.app.domain.model.Preset
+import com.aerophone.app.domain.model.SleepTimerOption
+import com.aerophone.app.service.HearingAidService
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow

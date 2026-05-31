@@ -1,4 +1,4 @@
-package com.hearassist.app.data.audio
+package com.aerophone.app.data.audio
 
 import android.annotation.SuppressLint
 import android.media.AudioAttributes
@@ -6,8 +6,8 @@ import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.AudioTrack
 import android.media.MediaRecorder
-import com.hearassist.app.domain.model.AudioSettings
-import com.hearassist.app.domain.model.EqualizerSettings
+import com.aerophone.app.domain.model.AudioSettings
+import com.aerophone.app.domain.model.EqualizerSettings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

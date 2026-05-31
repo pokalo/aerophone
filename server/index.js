@@ -154,6 +154,6 @@ async function pollUpdates() {
 }
 
 app.listen(PORT, () => {
-  console.log(`HearAssist payment server on :${PORT}`);
+  console.log(`Aerophone payment server on :${PORT}`);
   setupWebhook().catch(console.error);
 });

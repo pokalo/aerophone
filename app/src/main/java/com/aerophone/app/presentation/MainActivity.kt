@@ -1,4 +1,4 @@
-package com.hearassist.app.presentation
+package com.aerophone.app.presentation
 
 import android.Manifest
 import android.content.Intent
@@ -25,11 +25,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
-import com.hearassist.app.billing.BillingResult
-import com.hearassist.app.domain.model.PremiumType
-import com.hearassist.app.presentation.theme.Background
-import com.hearassist.app.presentation.theme.HearAssistTheme
-import com.hearassist.app.presentation.theme.VUMeterRed
+import com.aerophone.app.billing.BillingResult
+import com.aerophone.app.domain.model.PremiumType
+import com.aerophone.app.presentation.theme.Background
+import com.aerophone.app.presentation.theme.AerophoneTheme
+import com.aerophone.app.presentation.theme.VUMeterRed
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
         viewModel.registerFlashCallback { flashScreen() }
 
         setContent {
-            HearAssistTheme {
+            AerophoneTheme {
                 val state by viewModel.state.collectAsState()
                 val purchaseResult by viewModel.purchaseResult.collectAsState()
                 var showPremium by remember { mutableStateOf(false) }
@@ -163,7 +163,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreenWithAlert(
-    state: com.hearassist.app.domain.model.HearingAidState,
+    state: com.aerophone.app.domain.model.HearingAidState,
     viewModel: MainViewModel,
     onRequestPermission: () -> Unit,
     onShowPremium: () -> Unit

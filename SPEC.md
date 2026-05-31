@@ -1,8 +1,8 @@
-# HearAssist - Спецификация
+# Aerophone - Спецификация
 
 ## 1. Project Overview
 
-**Название:** HearAssist  
+**Название:** Aerophone  
 **Тип:** Android-приложение (усилитель звука/слуховой аппарат)  
 **Версия:** 1.0.0
 **Min SDK:** 29 (Android 10), **Target SDK:** 34

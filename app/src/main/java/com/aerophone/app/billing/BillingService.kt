@@ -1,11 +1,11 @@
-package com.hearassist.app.billing
+package com.aerophone.app.billing
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.hearassist.app.domain.model.PremiumConfig
-import com.hearassist.app.domain.model.PremiumType
+import com.aerophone.app.domain.model.PremiumConfig
+import com.aerophone.app.domain.model.PremiumType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +25,7 @@ sealed class BillingResult {
 class BillingService(private val context: Context) {
 
     companion object {
-        private const val TAG = "HearAssistBilling"
+        private const val TAG = "AerophoneBilling"
         const val PRODUCT_ID = "premium_unlock"
     }
 
@@ -76,9 +76,9 @@ class BillingService(private val context: Context) {
                 }
 
                 val title = when (type) {
-                    PremiumType.ONETIME -> "HearAssist Premium"
-                    PremiumType.MONTHLY -> "HearAssist Premium (месяц)"
-                    PremiumType.YEARLY -> "HearAssist Premium (год)"
+                    PremiumType.ONETIME -> "Aerophone Premium"
+                    PremiumType.MONTHLY -> "Aerophone Premium (месяц)"
+                    PremiumType.YEARLY -> "Aerophone Premium (год)"
                 }
                 val description = "Премиум-доступ: ${type.displayName}"
 

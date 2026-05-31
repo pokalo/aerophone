@@ -1,4 +1,4 @@
-package com.hearassist.app.presentation.theme
+package com.aerophone.app.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

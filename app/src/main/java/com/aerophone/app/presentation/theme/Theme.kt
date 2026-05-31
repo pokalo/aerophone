@@ -1,4 +1,4 @@
-package com.hearassist.app.presentation.theme
+package com.aerophone.app.presentation.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -27,7 +27,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 @Composable
-fun HearAssistTheme(
+fun AerophoneTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = DarkColorScheme

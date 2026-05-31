@@ -1,7 +1,7 @@
 {
-  "name": "hearassist-payments",
+  "name": "aerophone-payments",
   "version": "1.0.0",
-  "description": "Telegram Stars payment server for HearAssist",
+  "description": "Telegram Stars payment server for Aerophone",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

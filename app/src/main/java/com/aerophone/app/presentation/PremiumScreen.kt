@@ -1,4 +1,4 @@
-package com.hearassist.app.presentation
+package com.aerophone.app.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -38,12 +38,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hearassist.app.domain.model.PaymentMethod
-import com.hearassist.app.domain.model.PremiumConfig
-import com.hearassist.app.domain.model.PremiumType
-import com.hearassist.app.presentation.theme.Primary
-import com.hearassist.app.presentation.theme.Surface
-import com.hearassist.app.presentation.theme.VUMeterYellow
+import com.aerophone.app.domain.model.PaymentMethod
+import com.aerophone.app.domain.model.PremiumConfig
+import com.aerophone.app.domain.model.PremiumType
+import com.aerophone.app.presentation.theme.Primary
+import com.aerophone.app.presentation.theme.Surface
+import com.aerophone.app.presentation.theme.VUMeterYellow
 
 @Composable
 fun PremiumScreen(

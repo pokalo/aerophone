@@ -1,4 +1,4 @@
-package com.hearassist.app.data.repository
+package com.aerophone.app.data.repository
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -10,11 +10,11 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.hearassist.app.domain.model.AudioSettings
-import com.hearassist.app.domain.model.EqualizerSettings
-import com.hearassist.app.domain.model.HearingAidState
-import com.hearassist.app.domain.model.PremiumType
-import com.hearassist.app.domain.model.Preset
+import com.aerophone.app.domain.model.AudioSettings
+import com.aerophone.app.domain.model.EqualizerSettings
+import com.aerophone.app.domain.model.HearingAidState
+import com.aerophone.app.domain.model.PremiumType
+import com.aerophone.app.domain.model.Preset
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.hearassist.app"
+    namespace = "com.aerophone.app"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.hearassist.app"
+        applicationId = "com.aerophone.app"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -17,10 +17,10 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("hearassist.keystore")
-            storePassword = "HearAssist2024!"
-            keyAlias = "hearassist"
-            keyPassword = "HearAssist2024!"
+            storeFile = file("aerophone.keystore")
+            storePassword = "Aerophone2024!"
+            keyAlias = "aerophone"
+            keyPassword = "Aerophone2024!"
         }
     }
 

@@ -11,9 +11,9 @@ server/node_modules/
 *.cer
 *.zip
 local.properties
-hearassist.keystore
-hearassist.pem
-hearassist_cert.cer
+aerophone.keystore
+aerophone.pem
+aerophone_cert.cer
 pepk.jar
 rustore_encrypted.zip
 Screenshots/

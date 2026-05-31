@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">HearAssist</string>
+    <string name="app_name">Aerophone</string>
     <string name="app_description">Усилитель звука для людей с нарушениями слуха. Транслирует звук с микрофона в наушники с низкой задержкой, настройками частот и защитой слуха. Не является медицинским прибором.</string>
     <string name="app_short_description">Усилитель звука для слабослышащих</string>
-    <string name="app_full_description">HearAssist — приложение-усилитель звука для людей с нарушениями слуха.
+    <string name="app_full_description">Aerophone — приложение-усилитель звука для людей с нарушениями слуха.
 
 ОСНОВНЫЕ ФУНКЦИИ:
 • Усиление звука в реальном времени с минимальной задержкой
@@ -48,6 +48,6 @@
     <string name="permission_denied">Разрешение отклонено</string>
     <string name="headphones_required">Подключите наушники</string>
     <string name="notification_channel_name">Слуховой аппарат</string>
-    <string name="notification_title">HearAssist работает</string>
+    <string name="notification_title">Aerophone работает</string>
     <string name="notification_text">Трансляция звука в наушники</string>
 </resources>

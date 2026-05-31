@@ -1,4 +1,4 @@
-package com.hearassist.app.presentation
+package com.aerophone.app.presentation
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -44,16 +44,16 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hearassist.app.domain.model.Preset
-import com.hearassist.app.domain.model.SleepTimerOption
-import com.hearassist.app.domain.model.PremiumConfig
-import com.hearassist.app.presentation.theme.Background
-import com.hearassist.app.presentation.theme.Primary
-import com.hearassist.app.presentation.theme.Surface
-import com.hearassist.app.presentation.theme.SurfaceVariant
-import com.hearassist.app.presentation.theme.VUMeterGreen
-import com.hearassist.app.presentation.theme.VUMeterRed
-import com.hearassist.app.presentation.theme.VUMeterYellow
+import com.aerophone.app.domain.model.Preset
+import com.aerophone.app.domain.model.SleepTimerOption
+import com.aerophone.app.domain.model.PremiumConfig
+import com.aerophone.app.presentation.theme.Background
+import com.aerophone.app.presentation.theme.Primary
+import com.aerophone.app.presentation.theme.Surface
+import com.aerophone.app.presentation.theme.SurfaceVariant
+import com.aerophone.app.presentation.theme.VUMeterGreen
+import com.aerophone.app.presentation.theme.VUMeterRed
+import com.aerophone.app.presentation.theme.VUMeterYellow
 import kotlin.math.roundToInt
 
 @Composable
@@ -83,7 +83,7 @@ fun MainScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "HearAssist",
+            text = "Aerophone",
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White
@@ -196,7 +196,7 @@ fun PowerButton(
 
 @Composable
 fun SettingsCard(
-    state: com.hearassist.app.domain.model.HearingAidState,
+    state: com.aerophone.app.domain.model.HearingAidState,
     viewModel: MainViewModel
 ) {
     Card(
@@ -338,7 +338,7 @@ fun SettingsCard(
 
 @Composable
 fun EqualizerCard(
-    state: com.hearassist.app.domain.model.HearingAidState,
+    state: com.aerophone.app.domain.model.HearingAidState,
     viewModel: MainViewModel
 ) {
     Card(
@@ -482,7 +482,7 @@ fun SliderSetting(
 
 @Composable
 fun SleepTimerCard(
-    state: com.hearassist.app.domain.model.HearingAidState,
+    state: com.aerophone.app.domain.model.HearingAidState,
     viewModel: MainViewModel
 ) {
     Card(
@@ -546,7 +546,7 @@ fun SleepTimerCard(
 
 @Composable
 fun AlertsCard(
-    state: com.hearassist.app.domain.model.HearingAidState,
+    state: com.aerophone.app.domain.model.HearingAidState,
     viewModel: MainViewModel
 ) {
     Card(
