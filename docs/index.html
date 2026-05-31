@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HearAssist — Слуховой ассистент</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #0a0a0f;
+      color: #e8e8ed;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at 30% 50%, rgba(52,199,89,0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 50%, rgba(0,122,255,0.08) 0%, transparent 60%);
+      animation: pulse 8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      width: 100%;
+      padding: 80px 0;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #34c759, #30d158);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      color: #98989d;
+      margin-bottom: 32px;
+      max-width: 480px;
+    }
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .badge {
+      background: rgba(52,199,89,0.1);
+      border: 1px solid rgba(52,199,89,0.25);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: #34c759;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      text-decoration: none;
+      transition: all 0.25s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #34c759, #28a745);
+      color: #fff;
+      box-shadow: 0 8px 32px rgba(52,199,89,0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(52,199,89,0.45);
+    }
+    .btn-outline {
+      background: transparent;
+      color: #e8e8ed;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .btn-outline:hover {
+      border-color: rgba(52,199,89,0.5);
+      background: rgba(52,199,89,0.05);
+    }
+
+    .phone-mock {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+    .phone-frame {
+      width: 280px;
+      height: 580px;
+      background: #1c1c1e;
+      border-radius: 40px;
+      border: 3px solid #2c2c2e;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+      overflow: hidden;
+      position: relative;
+    }
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: #121214;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+    }
+    .phone-notch {
+      width: 120px;
+      height: 28px;
+      background: #1c1c1e;
+      border-radius: 0 0 16px 16px;
+      margin: -20px auto 16px;
+    }
+    .vu-meter {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+    .vu-bar {
+      width: 6px;
+      height: 80px;
+      background: #2c2c2e;
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+    .vu-fill {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      border-radius: 3px;
+      transition: height 0.3s;
+    }
+    .vu-fill:nth-child(1) { height: 60%; background: #34c759; }
+    .vu-fill:nth-child(2) { height: 75%; background: #34c759; }
+    .vu-fill:nth-child(3) { height: 45%; background: #30d158; }
+    .vu-fill:nth-child(4) { height: 85%; animation: vu 1.2s ease-in-out infinite; }
+    .vu-fill:nth-child(5) { height: 50%; background: #34c759; }
+    @keyframes vu {
+      0%, 100% { height: 85%; }
+      50% { height: 40%; }
+    }
+    .phone-btn {
+      background: #30d158;
+      color: #fff;
+      text-align: center;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-top: auto;
+    }
+    .phone-btn-small {
+      background: rgba(255,255,255,0.06);
+      color: #98989d;
+      text-align: center;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 0.7rem;
+      margin-top: 8px;
+    }
+    .phone-tag {
+      display: inline-block;
+      background: rgba(52,199,89,0.15);
+      color: #34c759;
+      padding: 2px 10px;
+      border-radius: 10px;
+      font-size: 0.6rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .phone-tag-white {
+      display: inline-block;
+      background: rgba(255,255,255,0.1);
+      color: #e8e8ed;
+      padding: 2px 10px;
+      border-radius: 10px;
+      font-size: 0.6rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    /* Features */
+    .section {
+      padding: 100px 0;
+    }
+    .section-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #34c759;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .section h2 {
+      font-size: clamp(2rem, 3vw, 2.8rem);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      color: #98989d;
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin-bottom: 48px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: #121214;
+      border: 1px solid #1c1c1e;
+      border-radius: 20px;
+      padding: 32px;
+      transition: all 0.3s;
+    }
+    .feature-card:hover {
+      border-color: rgba(52,199,89,0.3);
+      transform: translateY(-4px);
+    }
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(52,199,89,0.1);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 18px;
+    }
+    .feature-card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 10px;
+    }
+    .feature-card p {
+      color: #98989d;
+      font-size: 0.92rem;
+    }
+
+    /* Premium */
+    .premium-section {
+      background: linear-gradient(135deg, #0d1f12 0%, #121214 50%, #0d1420 100%);
+      border-top: 1px solid rgba(52,199,89,0.1);
+      border-bottom: 1px solid rgba(52,199,89,0.1);
+    }
+    .pricing-card {
+      max-width: 420px;
+      margin: 0 auto;
+      background: #1c1c1e;
+      border: 1px solid rgba(52,199,89,0.3);
+      border-radius: 24px;
+      padding: 48px 40px;
+      text-align: center;
+    }
+    .pricing-card .price {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #34c759;
+      margin-bottom: 8px;
+    }
+    .pricing-card .price-label {
+      color: #98989d;
+      font-size: 0.9rem;
+      margin-bottom: 32px;
+    }
+    .pricing-card ul {
+      list-style: none;
+      text-align: left;
+      margin-bottom: 32px;
+    }
+    .pricing-card li {
+      padding: 10px 0;
+      border-bottom: 1px solid #2c2c2e;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.95rem;
+    }
+    .pricing-card li:last-child { border-bottom: none; }
+    .pricing-card li::before {
+      content: '✓';
+      color: #34c759;
+      font-weight: 700;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid #1c1c1e;
+      padding: 40px 0;
+      text-align: center;
+      color: #636366;
+      font-size: 0.85rem;
+    }
+    footer a { color: #98989d; text-decoration: none; }
+    footer a:hover { color: #34c759; }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 60px 0;
+      }
+      .hero h1 { font-size: 2.2rem; }
+      .phone-frame { width: 220px; height: 460px; }
+      .section { padding: 60px 0; }
+      .pricing-card { padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="container hero-content">
+      <div>
+        <h1>HearAssist</h1>
+        <p>Слуховой ассистент с шумоподавлением и эквалайзером. Преврати свой смартфон в профессиональный слуховой аппарат.</p>
+        <div class="hero-badges">
+          <span class="badge">🎧 Шумоподавление</span>
+          <span class="badge">🎛 5-полосный эквалайзер</span>
+          <span class="badge">⚡ Низкая задержка</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px">
+          <a href="#" class="btn btn-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            RuStore
+          </a>
+          <a href="#" class="btn btn-outline">Узнать больше</a>
+        </div>
+      </div>
+      <div class="phone-mock">
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="phone-notch"></div>
+            <div class="vu-meter">
+              <div class="vu-bar"><div class="vu-fill" style="height:60%"></div></div>
+              <div class="vu-bar"><div class="vu-fill" style="height:75%"></div></div>
+              <div class="vu-bar"><div class="vu-fill" style="height:45%"></div></div>
+              <div class="vu-bar"><div class="vu-fill" style="height:85%"></div></div>
+              <div class="vu-bar"><div class="vu-fill" style="height:50%"></div></div>
+            </div>
+            <div class="phone-tag">🔊 Уровень звука</div>
+            <div style="display:flex;gap:8px;margin-bottom:12px">
+              <div style="flex:1;background:#2c2c2e;padding:10px;border-radius:10px;text-align:center">
+                <div style="font-size:0.6rem;color:#636366">Громкость</div>
+                <div style="font-size:0.8rem;color:#e8e8ed">80%</div>
+              </div>
+              <div style="flex:1;background:#2c2c2e;padding:10px;border-radius:10px;text-align:center">
+                <div style="font-size:0.6rem;color:#636366">Баланс</div>
+                <div style="font-size:0.8rem;color:#e8e8ed">L▪️R</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;margin-bottom:12px">
+              <div style="flex:1;height:4px;background:#2c2c2e;border-radius:2px"><div style="width:100%;height:100%;background:#34c759;border-radius:2px"></div></div>
+              <div style="flex:1;height:4px;background:#2c2c2e;border-radius:2px"><div style="width:70%;height:100%;background:#34c759;border-radius:2px"></div></div>
+              <div style="flex:1;height:4px;background:#2c2c2e;border-radius:2px"><div style="width:45%;height:100%;background:#30d158;border-radius:2px"></div></div>
+              <div style="flex:1;height:4px;background:#2c2c2e;border-radius:2px"><div style="width:85%;height:100%;background:#28a745;border-radius:2px"></div></div>
+              <div style="flex:1;height:4px;background:#2c2c2e;border-radius:2px"><div style="width:55%;height:100%;background:#34c759;border-radius:2px"></div></div>
+            </div>
+            <div style="display:flex;gap:4px;margin-bottom:8px">
+              <span class="phone-tag-white">31</span><span class="phone-tag-white">62</span><span class="phone-tag-white">125</span><span class="phone-tag-white">250</span><span class="phone-tag-white">500</span>
+            </div>
+            <div class="phone-btn">▶ Слушать</div>
+            <div class="phone-btn-small">Таймер сна: 30 мин</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-label">Возможности</div>
+      <h2>Всё, что нужно для комфортного слуха</h2>
+      <p class="section-sub">HearAssist обрабатывает звук в реальном времени с минимальной задержкой, используя встроенные алгоритмы цифровой обработки сигналов.</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🎛</div>
+          <h3>5-полосный эквалайзер</h3>
+          <p>Точная настройка частот 31–500 Гц под ваш слух. Сохраняйте профили для разных ситуаций.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌊</div>
+          <h3>Шумоподавление</h3>
+          <p>Умный алгоритм подавляет фоновый шум, оставляя речь и важные звуки чистыми и разборчивыми.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Лимитер</h3>
+          <p>Защита от внезапных громких звуков. Комфортное прослушивание без риска перегрузки.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚖️</div>
+          <h3>Баланс L/R</h3>
+          <p>Независимая регулировка левого и правого канала для компенсации асимметрии слуха.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⏰</div>
+          <h3>Таймер сна</h3>
+          <p>Автоматическое отключение через заданное время. Удобно при засыпании с наушниками.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔔</div>
+          <h3>Оповещение о шуме</h3>
+          <p>Вибросигнал и вспышка при резких громких звуках — вы не пропустите важное.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section premium-section">
+    <div class="container">
+      <div style="text-align:center">
+        <div class="section-label">Премиум</div>
+        <h2>Разблокируйте полный потенциал</h2>
+        <p class="section-sub" style="margin:0 auto 48px">Бесплатная версия включает базовые функции. Премиум открывает все возможности приложения.</p>
+      </div>
+      <div class="pricing-card">
+        <div class="price">299 ₽</div>
+        <div class="price-label">Разовая покупка навсегда</div>
+        <ul>
+          <li>Неограниченное время работы</li>
+          <li>5-полосный эквалайзер</li>
+          <li>Продвинутое шумоподавление</li>
+          <li>Лимитер с настройками</li>
+          <li>Все будущие обновления</li>
+        </ul>
+        <a href="#" class="btn btn-primary" style="width:100%;justify-content:center">Купить Премиум</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding:80px 0;text-align:center">
+    <div class="container">
+      <h2 style="margin-bottom:16px">Готовы попробовать?</h2>
+      <p class="section-sub" style="margin:0 auto 32px">Скачайте HearAssist на RuStore и убедитесь сами.</p>
+      <a href="#" class="btn btn-primary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        Скачать в RuStore
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 HearAssist. Все права защищены.</p>
+      <p style="margin-top:8px"><a href="mailto:support@hearassist.app">support@hearassist.app</a></p>
+    </div>
+  </footer>
+</body>
+</html>
