@@ -18,9 +18,9 @@ android {
     signingConfigs {
         create("release") {
             storeFile = file("aerophone.keystore")
-            storePassword = "Aerophone2024!"
-            keyAlias = "aerophone"
-            keyPassword = "Aerophone2024!"
+            storePassword = "HearAssist2024!"
+            keyAlias = "hearassist"
+            keyPassword = "HearAssist2024!"
         }
     }
 
