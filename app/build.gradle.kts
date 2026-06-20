@@ -8,11 +8,11 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.aerophone.app"
+        applicationId = "com.hearassist.app"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 7
+        versionName = "1.6"
     }
 
     signingConfigs {

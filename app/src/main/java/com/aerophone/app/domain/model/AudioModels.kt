@@ -81,7 +81,7 @@ object PremiumConfig {
     const val STARS_MONTHLY = 49
     const val STARS_YEARLY = 399
 
-    const val TELEGRAM_SERVER_URL = "https://aerophone-pay.onrender.com"
+    const val TELEGRAM_SERVER_URL = "https://api.perforator.dpdns.org"
 
     val freeLimits = FreeLimits()
 
