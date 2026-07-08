@@ -17,3 +17,25 @@ aerophone_cert.cer
 pepk.jar
 rustore_encrypted.zip
 Screenshots/
+
+# Debug/test artifacts
+*.log
+*.py
+*.p12
+STORE_DESCRIPTION.txt
+server/*.py
+server/test_*.js
+server/test_*.mjs
+server/check_*.py
+server/deploy*.py
+server/fix_*.py
+server/restart_*.py
+server/start_*.py
+server/stop_*.py
+server/verify_*.py
+server/upload_*.py
+server/diagnose*.py
+server/find-*.mjs
+server/upload-*.mjs
+server/cancel-*.mjs
+server/check-*.mjs
