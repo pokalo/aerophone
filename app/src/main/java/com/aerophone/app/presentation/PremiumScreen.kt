@@ -38,7 +38,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.aerophone.app.domain.model.PaymentMethod
 import com.aerophone.app.domain.model.PremiumConfig
 import com.aerophone.app.domain.model.PremiumType
 import com.aerophone.app.presentation.theme.Primary
@@ -53,7 +52,6 @@ fun PremiumScreen(
     isLoading: Boolean = false
 ) {
     var selectedType by remember { mutableStateOf(PremiumType.ONETIME) }
-    var selectedMethod by remember { mutableStateOf(PaymentMethod.RUSTORE) }
 
     Box(
         modifier = Modifier
@@ -140,29 +138,30 @@ fun PremiumScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // --- Селектор способа оплаты ---
+                // --- Способ оплаты (только Telegram Stars) ---
                 Text("Способ оплаты", fontSize = 13.sp, color = Color.Gray)
                 Spacer(modifier = Modifier.height(8.dp))
-                Row(
+                Card(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    colors = CardDefaults.cardColors(containerColor = Primary.copy(alpha = 0.15f)),
+                    shape = RoundedCornerShape(12.dp)
                 ) {
-                    PaymentMethod.entries.forEach { method ->
-                        val selected = method == selectedMethod
-                        Button(
-                            onClick = { selectedMethod = method },
-                            modifier = Modifier.weight(1f),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = if (selected) Primary else Color(0xFF2C2C2E)
-                            ),
-                            shape = RoundedCornerShape(12.dp)
-                        ) {
-                            Text(
-                                text = method.displayName,
-                                fontSize = 13.sp,
-                                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
-                            )
-                        }
+                    Row(
+                        modifier = Modifier.padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Telegram Stars ⭐",
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Primary,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            text = "доступно",
+                            fontSize = 11.sp,
+                            color = Color.Gray
+                        )
                     }
                 }
 
@@ -207,15 +206,8 @@ fun PremiumScreen(
                     PremiumType.MONTHLY -> PremiumConfig.PRICE_MONTHLY
                     PremiumType.YEARLY -> PremiumConfig.PRICE_YEARLY
                 }
-                val starsIcon = if (selectedMethod == PaymentMethod.TELEGRAM_STARS) " ⭐" else ""
-
                 Button(
-                    onClick = {
-                        when (selectedMethod) {
-                            PaymentMethod.RUSTORE -> onPurchaseRuStore(selectedType)
-                            PaymentMethod.TELEGRAM_STARS -> onPurchaseTelegramStars(selectedType)
-                        }
-                    },
+                    onClick = { onPurchaseTelegramStars(selectedType) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(52.dp),
@@ -230,7 +222,7 @@ fun PremiumScreen(
                         )
                     } else {
                         Text(
-                            text = "Купить за $buttonPrice$starsIcon",
+                            text = "Купить за $buttonPrice ⭐",
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -255,7 +247,16 @@ fun PremiumScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(14.dp))
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Поддержка: aerophone@support.com",
+                    fontSize = 11.sp,
+                    color = Color.Gray,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
                     text = "Пропустить",

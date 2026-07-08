@@ -5,6 +5,22 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
     
+    <!-- Ear shadow -->
+    <path
+        android:fillColor="#0D0D1A"
+        android:pathData="M54,22
+            C41,22 32,33 32,48
+            C32,56 35,63 40,68
+            C44,72 47,78 47,85
+            C47,90 49,93 53,93
+            L55,93
+            C58,93 60,90 60,85
+            L60,68
+            C66,63 69,56 69,48
+            C69,33 61,22 54,22
+            Z"
+        android:alpha="0.3"/>
+    
     <!-- Ear shape -->
     <path
         android:fillColor="#FFFFFF"
@@ -21,7 +37,7 @@
     
     <!-- Inner ear detail -->
     <path
-        android:fillColor="#4CAF50"
+        android:fillColor="#66BB6A"
         android:pathData="M54,32
             C46,32 40,40 40,48
             C40,55 43,61 48,65
@@ -33,32 +49,47 @@
             C68,40 62,32 54,32
             Z"/>
     
+    <!-- Inner highlight -->
+    <path
+        android:fillColor="#A5D6A7"
+        android:pathData="M54,36
+            C48,36 44,42 44,48
+            C44,53 46,57 50,60
+            L50,76
+            C50,78 52,79 54,79
+            C56,79 58,78 58,76
+            L58,60
+            C62,57 64,53 64,48
+            C64,42 60,36 54,36
+            Z"
+        android:alpha="0.6"/>
+    
     <!-- Sound waves right -->
     <path
         android:strokeColor="#FFFFFF"
-        android:strokeWidth="2.5"
+        android:strokeWidth="3.5"
         android:strokeLineCap="round"
         android:fillColor="#00000000"
         android:pathData="M76,38 Q82,44 76,54"/>
     <path
         android:strokeColor="#FFFFFF"
-        android:strokeWidth="2.5"
+        android:strokeWidth="3.5"
         android:strokeLineCap="round"
         android:fillColor="#00000000"
-        android:pathData="M82,32 Q92,44 82,60"/>
+        android:pathData="M84,30 Q94,44 84,62"/>
     
     <!-- Sound waves left -->
     <path
         android:strokeColor="#FFFFFF"
-        android:strokeWidth="2.5"
+        android:strokeWidth="3.5"
         android:strokeLineCap="round"
         android:fillColor="#00000000"
         android:pathData="M32,38 Q26,44 32,54"/>
     <path
         android:strokeColor="#FFFFFF"
-        android:strokeWidth="2.5"
+        android:strokeWidth="3.5"
         android:strokeLineCap="round"
         android:fillColor="#00000000"
-        android:pathData="M26,32 Q16,44 26,60"/>
+        android:pathData="M24,30 Q14,44 24,62"/>
     
 </vector>

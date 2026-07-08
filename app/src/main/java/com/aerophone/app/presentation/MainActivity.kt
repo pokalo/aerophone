@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.KeyEvent
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -66,8 +67,13 @@ class MainActivity : ComponentActivity() {
                 LaunchedEffect(Unit) {
                     viewModel.openTelegramInvoice.collect { link ->
                         isPurchasing = true
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-                        startActivity(intent)
+                        try {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                            startActivity(intent)
+                        } catch (e: Exception) {
+                            Toast.makeText(this@MainActivity, "Telegram недоступен в вашем регионе", Toast.LENGTH_LONG).show()
+                            isPurchasing = false
+                        }
                     }
                 }
 
@@ -139,6 +145,25 @@ class MainActivity : ComponentActivity() {
                 decorView.setBackgroundColor(android.graphics.Color.parseColor("#121212"))
                 window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             }, 150)
+        }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        val state = viewModel.state.value
+        if (!state.isRunning) return super.onKeyDown(keyCode, event)
+
+        return when (keyCode) {
+            KeyEvent.KEYCODE_VOLUME_UP -> {
+                val newVolume = (state.audioSettings.volume + 0.05f).coerceAtMost(if (state.isPremium) 2f else 1f)
+                viewModel.setVolume(newVolume)
+                true
+            }
+            KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                val newVolume = (state.audioSettings.volume - 0.05f).coerceAtLeast(0f)
+                viewModel.setVolume(newVolume)
+                true
+            }
+            else -> super.onKeyDown(keyCode, event)
         }
     }
 

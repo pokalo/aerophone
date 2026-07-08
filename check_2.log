@@ -1,0 +1,20 @@
+[REQUEST] {}
+[ERROR] Missing required fields
+[REQUEST] {}
+[ERROR] Missing required fields
+[REQUEST] {}
+[ERROR] Missing required fields
+[REQUEST] {"purchaseId":"b828103c-c455-4e39-bb7f-38513042e463","title":"Aerophone Premium","description":"Премиум-доступ: Навсегда","starsAmount":149}
+[TG_SEND] {"title":"Aerophone Premium","description":"Премиум-доступ: Навсегда","payload":"b828103c-c455-4e39-bb7f-38513042e463","currency":"XTR","prices":[{"label":"Aerophone Premium","amount":149}]}
+[TG_RESULT] {"ok":true,"result":"https://t.me/$b3YQbscbwEmPGgAAVyabh1MESOg"}
+[SUCCESS] link: https://t.me/$b3YQbscbwEmPGgAAVyabh1MESOg
+[REQUEST] {"purchaseId":"2fea379f-beaf-4a37-9e24-01d0b4e97804","title":"Aerophone Premium (месяц)","description":"Премиум-доступ: На месяц","starsAmount":49}
+[TG_SEND] {"title":"Aerophone Premium (месяц)","description":"Премиум-доступ: На месяц","payload":"2fea379f-beaf-4a37-9e24-01d0b4e97804","currency":"XTR","prices":[{"label":"Aerophone Premium (месяц)","amount":49}]}
+[TG_RESULT] {"ok":true,"result":"https://t.me/$KJKoUscbwEmRGgAAMCiRx40vOfw"}
+[SUCCESS] link: https://t.me/$KJKoUscbwEmRGgAAMCiRx40vOfw
+Aerophone payment server on :3000
+Webhook: установлен Webhook is already set
+[REQUEST] {"purchaseId":"activate_test123_1_1","title":"VPN — 1 месяц","description":"Подписка на VPN на 1 месяц","starsAmount":99}
+[TG_SEND] {"title":"VPN — 1 месяц","description":"Подписка на VPN на 1 месяц","payload":"activate_test123_1_1","currency":"XTR","prices":[{"label":"VPN — 1 месяц","amount":99}]}
+[TG_RESULT] {"ok":true,"result":"https://t.me/$Zt_OOsUV4El3FgAAGZeISHtl4HE"}
+[SUCCESS] link: https://t.me/$Zt_OOsUV4El3FgAAGZeISHtl4HE

@@ -1,0 +1,23 @@
+[PM2] Applying action restartProcessId on app [aerophone-payments](ids: [ 1 ])
+[PM2] [aerophone-payments](1) ✓
+┌────┬───────────────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+│ id │ name                  │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+├────┼───────────────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤
+│ 1  │ aerophone-payments    │ default     │ 1.0.0   │ fork    │ 1657055  │ 0s     │ 4    │ online    │ 0%       │ 16.5mb   │ pavkraft │ disabled │
+│ 0  │ pavkraft-bots         │ default     │ 1.0.0   │ fork    │ 1516539  │ 4D     │ 0    │ online    │ 0%       │ 45.5mb   │ pavkraft │ disabled │
+└────┴───────────────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
+[TAILING] Tailing last 5 lines for [aerophone-payments] process (change the value with --lines option)
+/home/pavkraft/.pm2/logs/aerophone-payments-error.log last 5 lines:
+1|aerophon |     at done (/home/pavkraft/aerophone-payments/node_modules/raw-body/index.js:227:7)
+1|aerophon |     at IncomingMessage.onEnd (/home/pavkraft/aerophone-payments/node_modules/raw-body/index.js:287:7)
+1|aerophon |     at IncomingMessage.emit (node:events:519:28)
+1|aerophon |     at endReadableNT (node:internal/streams/readable:1698:12)
+1|aerophon |     at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+
+/home/pavkraft/.pm2/logs/aerophone-payments-out.log last 5 lines:
+1|aerophon | Aerophone payment server on :3000
+1|aerophon | Webhook: установлен Webhook is already set
+1|aerophon | Aerophone payment server on :3000
+1|aerophon | Webhook: установлен Webhook is already set
+1|aerophon | Aerophone payment server on :3000
+
