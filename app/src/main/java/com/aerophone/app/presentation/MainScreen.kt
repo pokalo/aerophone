@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -110,11 +111,11 @@ fun MainScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        SettingsCard(state = state, viewModel = viewModel)
+        SettingsCard(state = state, viewModel = viewModel, onShowPremium = onShowPremium)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        EqualizerCard(state = state, viewModel = viewModel)
+        EqualizerCard(state = state, viewModel = viewModel, onShowPremium = onShowPremium)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -197,7 +198,8 @@ fun PowerButton(
 @Composable
 fun SettingsCard(
     state: com.aerophone.app.domain.model.HearingAidState,
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
+    onShowPremium: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -211,9 +213,13 @@ fun SettingsCard(
                 label = "Громкость",
                 value = state.audioSettings.volume,
                 onValueChange = { viewModel.setVolume(it) },
-                valueRange = 0f..2f,
+                valueRange = if (state.isPremium) 0f..2f else 0f..1f,
                 suffix = "%"
             )
+            if (!state.isPremium) {
+                Spacer(modifier = Modifier.height(8.dp))
+                PremiumBadge(onClick = onShowPremium, text = "Громкость 200%")
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -268,7 +274,19 @@ fun SettingsCard(
                     )
                 }
             } else {
-                PremiumFeatureRow("Шумоподавление", "Премиум")
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onShowPremium() },
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text("Шумоподавление", color = Color.Gray)
+                        Text("Функция Премиум", color = Color.Gray, fontSize = 12.sp)
+                    }
+                    PremiumChip()
+                }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -321,13 +339,23 @@ fun SettingsCard(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Preset.entries.forEach { preset ->
+                    val isPremiumPreset = preset !in PremiumConfig.freeLimits.allowedPresets
+                    val isLocked = !state.isPremium && isPremiumPreset
                     FilterChip(
                         selected = state.currentPreset == preset,
-                        onClick = { viewModel.applyPreset(preset) },
-                        label = { Text(preset.displayName) },
+                        onClick = { if (isLocked) onShowPremium() else viewModel.applyPreset(preset) },
+                        label = {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(preset.displayName, fontSize = 12.sp, color = if (isLocked) Color.Gray else Color.Unspecified)
+                                if (isLocked) {
+                                    Spacer(modifier = Modifier.width(4.dp))
+                                    Text("★", color = Primary, fontSize = 12.sp)
+                                }
+                            }
+                        },
                         colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = Primary,
-                            selectedLabelColor = Color.White
+                            containerColor = if (isLocked) SurfaceVariant else SurfaceVariant,
+                            labelColor = if (isLocked) Color.Gray else Color.White
                         )
                     )
                 }
@@ -339,7 +367,8 @@ fun SettingsCard(
 @Composable
 fun EqualizerCard(
     state: com.aerophone.app.domain.model.HearingAidState,
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
+    onShowPremium: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -373,35 +402,19 @@ fun EqualizerCard(
             if (state.equalizerSettings.isEnabled) {
                 Spacer(modifier = Modifier.height(16.dp))
 
-                EqBandSlider(
-                    label = "60 Hz",
-                    value = state.equalizerSettings.band60Hz,
-                    onValueChange = { viewModel.setEqualizerBand(0, it) }
-                )
+                EqBandSlider("60 Hz", state.equalizerSettings.band60Hz, { viewModel.setEqualizerBand(0, it) })
 
-                EqBandSlider(
-                    label = "250 Hz",
-                    value = state.equalizerSettings.band250Hz,
-                    onValueChange = { viewModel.setEqualizerBand(1, it) }
-                )
+                EqBandSlider("250 Hz", state.equalizerSettings.band250Hz, { viewModel.setEqualizerBand(1, it) })
 
-                EqBandSlider(
-                    label = "1 kHz",
-                    value = state.equalizerSettings.band1kHz,
-                    onValueChange = { viewModel.setEqualizerBand(2, it) }
-                )
+                EqBandSlider("1 kHz", state.equalizerSettings.band1kHz, { viewModel.setEqualizerBand(2, it) })
 
-                EqBandSlider(
-                    label = "4 kHz",
-                    value = state.equalizerSettings.band4kHz,
-                    onValueChange = { viewModel.setEqualizerBand(3, it) }
-                )
+                EqBandSlider("4 kHz", state.equalizerSettings.band4kHz,
+                    if (state.isPremium) { v -> viewModel.setEqualizerBand(3, v) } else null,
+                    isPremium = !state.isPremium, onPremiumClick = onShowPremium)
 
-                EqBandSlider(
-                    label = "16 kHz",
-                    value = state.equalizerSettings.band16kHz,
-                    onValueChange = { viewModel.setEqualizerBand(4, it) }
-                )
+                EqBandSlider("16 kHz", state.equalizerSettings.band16kHz,
+                    if (state.isPremium) { v -> viewModel.setEqualizerBand(4, v) } else null,
+                    isPremium = !state.isPremium, onPremiumClick = onShowPremium)
             }
         }
     }
@@ -411,7 +424,9 @@ fun EqualizerCard(
 fun EqBandSlider(
     label: String,
     value: Float,
-    onValueChange: (Float) -> Unit
+    onValueChange: ((Float) -> Unit)?,
+    isPremium: Boolean = false,
+    onPremiumClick: (() -> Unit)? = null
 ) {
     Column {
         Row(
@@ -419,10 +434,17 @@ fun EqBandSlider(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(label, color = Color.Gray, fontSize = 14.sp)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(label, color = if (isPremium) Color.Gray else Color.White, fontSize = 14.sp)
+                if (isPremium) {
+                    Spacer(modifier = Modifier.width(8.dp))
+                    PremiumChip(onClick = onPremiumClick)
+                }
+            }
             Text(
                 text = "${if (value >= 0) "+" else ""}${value.toInt()} dB",
                 color = when {
+                    isPremium -> Color.Gray
                     value > 6 -> VUMeterRed
                     value > 3 -> VUMeterYellow
                     else -> Primary
@@ -434,12 +456,16 @@ fun EqBandSlider(
         
         Slider(
             value = value,
-            onValueChange = onValueChange,
+            onValueChange = { if (onValueChange != null) onValueChange(it) },
             valueRange = -12f..12f,
+            enabled = onValueChange != null,
             colors = SliderDefaults.colors(
-                thumbColor = Primary,
-                activeTrackColor = Primary,
-                inactiveTrackColor = SurfaceVariant
+                thumbColor = if (isPremium) SurfaceVariant else Primary,
+                activeTrackColor = if (isPremium) SurfaceVariant else Primary,
+                inactiveTrackColor = SurfaceVariant,
+                disabledThumbColor = SurfaceVariant,
+                disabledActiveTrackColor = SurfaceVariant,
+                disabledInactiveTrackColor = SurfaceVariant
             )
         )
     }
@@ -669,7 +695,7 @@ fun InfoCard() {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            InfoRow("Версия", "1.0.0")
+            InfoRow("Версия", "1.7")
             Spacer(modifier = Modifier.height(8.dp))
             InfoRow("Задержка", "~20-50 мс")
             Spacer(modifier = Modifier.height(8.dp))
@@ -700,18 +726,31 @@ fun InfoRow(label: String, value: String) {
 }
 
 @Composable
-fun PremiumFeatureRow(label: String, badge: String) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+fun PremiumBadge(onClick: () -> Unit, text: String = "Премиум") {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(containerColor = Primary),
+        shape = RoundedCornerShape(8.dp),
+        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+        modifier = Modifier.height(36.dp)
     ) {
-        Text(label, color = Color.Gray)
-        Text(
-            text = badge,
-            color = Primary,
-            fontWeight = FontWeight.Bold,
-            fontSize = 12.sp
-        )
+        Text("⭐ $text ▸", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color.White)
+    }
+}
+
+@Composable
+fun PremiumChip(onClick: (() -> Unit)? = null) {
+    val modifier = if (onClick != null) {
+        Modifier
+            .clickable { onClick() }
+            .background(Primary.copy(alpha = 0.15f), RoundedCornerShape(6.dp))
+            .padding(horizontal = 10.dp, vertical = 4.dp)
+    } else {
+        Modifier
+            .background(Primary.copy(alpha = 0.15f), RoundedCornerShape(6.dp))
+            .padding(horizontal = 10.dp, vertical = 4.dp)
+    }
+    Box(modifier = modifier) {
+        Text("★ Премиум", color = Primary, fontSize = 11.sp, fontWeight = FontWeight.Bold)
     }
 }

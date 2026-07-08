@@ -53,15 +53,15 @@ class BillingService(private val context: Context) {
 
     suspend fun purchaseRuStore(activity: Activity, type: PremiumType): BillingResult {
         if (!isAvailable) return BillingResult.NotAvailable
-
         Log.d(TAG, "RuStore purchase: ${type.name}")
-
         return BillingResult.Success
     }
 
     // --- Telegram Stars ---
 
     private var currentPurchaseId: String? = null
+
+    fun getCurrentPurchaseId(): String = currentPurchaseId ?: ""
 
     suspend fun createTelegramInvoice(type: PremiumType): Result<String> {
         return withContext(Dispatchers.IO) {
@@ -91,6 +91,8 @@ class BillingService(private val context: Context) {
 
                 val url = URL("${PremiumConfig.TELEGRAM_SERVER_URL}/create-invoice")
                 val conn = url.openConnection() as HttpURLConnection
+                conn.connectTimeout = 15000
+                conn.readTimeout = 15000
                 conn.requestMethod = "POST"
                 conn.setRequestProperty("Content-Type", "application/json")
                 conn.doOutput = true
@@ -115,6 +117,8 @@ class BillingService(private val context: Context) {
             try {
                 val url = URL("${PremiumConfig.TELEGRAM_SERVER_URL}/check-payment/$purchaseId")
                 val conn = url.openConnection() as HttpURLConnection
+                conn.connectTimeout = 10000
+                conn.readTimeout = 10000
                 conn.requestMethod = "GET"
                 val response = conn.inputStream.bufferedReader().readText()
                 conn.disconnect()
@@ -123,6 +127,29 @@ class BillingService(private val context: Context) {
                 json["status"] == "completed"
             } catch (e: Exception) {
                 Log.e(TAG, "Check payment error", e)
+                false
+            }
+        }
+    }
+
+    fun setPurchaseId(id: String) {
+        currentPurchaseId = id
+    }
+
+    suspend fun checkPurchase(purchaseId: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            try {
+                val url = URL("${PremiumConfig.TELEGRAM_SERVER_URL}/check-payment/$purchaseId")
+                val conn = url.openConnection() as HttpURLConnection
+                conn.connectTimeout = 10000
+                conn.readTimeout = 10000
+                conn.requestMethod = "GET"
+                val response = conn.inputStream.bufferedReader().readText()
+                conn.disconnect()
+                val json = parseJson(response)
+                json["status"] == "completed"
+            } catch (e: Exception) {
+                Log.e(TAG, "Check purchase error", e)
                 false
             }
         }

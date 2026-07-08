@@ -15,6 +15,7 @@ import com.aerophone.app.domain.model.EqualizerSettings
 import com.aerophone.app.domain.model.HearingAidState
 import com.aerophone.app.domain.model.PremiumType
 import com.aerophone.app.domain.model.Preset
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -42,6 +43,8 @@ class SettingsRepository(private val context: Context) {
         private val KEY_IS_PREMIUM = booleanPreferencesKey("is_premium")
         private val KEY_PREMIUM_TYPE = stringPreferencesKey("premium_type")
         private val KEY_PREMIUM_EXPIRY = longPreferencesKey("premium_expiry")
+        private val KEY_PENDING_PURCHASE_ID = stringPreferencesKey("pending_purchase_id")
+        private val KEY_PENDING_PURCHASE_TYPE = stringPreferencesKey("pending_purchase_type")
     }
 
     val settingsFlow: Flow<HearingAidState> = context.dataStore.data.map { preferences ->
@@ -173,6 +176,30 @@ class SettingsRepository(private val context: Context) {
             it[KEY_IS_PREMIUM] = false
             it[KEY_PREMIUM_TYPE] = ""
             it[KEY_PREMIUM_EXPIRY] = 0
+        }
+    }
+
+    // Pending purchase persistence (survives process death)
+
+    suspend fun getPendingPurchaseId(): String? {
+        return context.dataStore.data.map { it[KEY_PENDING_PURCHASE_ID] }.first()
+    }
+
+    suspend fun getPendingPurchaseType(): String? {
+        return context.dataStore.data.map { it[KEY_PENDING_PURCHASE_TYPE] }.first()
+    }
+
+    suspend fun savePendingPurchase(purchaseId: String, type: PremiumType) {
+        context.dataStore.edit {
+            it[KEY_PENDING_PURCHASE_ID] = purchaseId
+            it[KEY_PENDING_PURCHASE_TYPE] = type.name
+        }
+    }
+
+    suspend fun clearPendingPurchase() {
+        context.dataStore.edit {
+            it[KEY_PENDING_PURCHASE_ID] = ""
+            it[KEY_PENDING_PURCHASE_TYPE] = ""
         }
     }
 }

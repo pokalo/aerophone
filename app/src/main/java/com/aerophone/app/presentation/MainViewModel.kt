@@ -18,6 +18,7 @@ import com.aerophone.app.billing.BillingResult
 import com.aerophone.app.billing.BillingService
 import com.aerophone.app.data.repository.SettingsRepository
 import com.aerophone.app.domain.model.HearingAidState
+import com.aerophone.app.domain.model.PremiumConfig
 import com.aerophone.app.domain.model.PremiumType
 import com.aerophone.app.domain.model.Preset
 import com.aerophone.app.domain.model.SleepTimerOption
@@ -90,6 +91,7 @@ class MainViewModel(
         loadSettings()
         bindService()
         registerAudioStateListener()
+        viewModelScope.launch { checkPendingPurchase() }
     }
 
     private fun initBilling() {
@@ -125,7 +127,12 @@ class MainViewModel(
             try {
                 val result = billingService.createTelegramInvoice(type)
                 if (result.isSuccess) {
+                    val purchaseId = billingService.getCurrentPurchaseId()
                     val link = result.getOrThrow()
+
+                    // Сохраняем purchaseId, чтобы пережить пересоздание Activity
+                    settingsRepository.savePendingPurchase(purchaseId, type)
+
                     _openTelegramInvoice.emit(link)
 
                     pollTelegramPayment(type)
@@ -146,12 +153,34 @@ class MainViewModel(
             delay(2000)
             if (billingService.checkTelegramPayment()) {
                 activatePremium(type)
+                settingsRepository.clearPendingPurchase()
                 _purchaseResult.value = BillingResult.Success
                 return
             }
-            attempts++
-        }
+        attempts++
+    }
         _purchaseResult.value = BillingResult.Error("Время ожидания истекло")
+    }
+
+    // Проверка незавершённого платежа при пересоздании ViewModel
+    private suspend fun checkPendingPurchase() {
+        val pendingId = settingsRepository.getPendingPurchaseId()
+        if (pendingId.isNullOrBlank()) return
+
+        val pendingTypeName = settingsRepository.getPendingPurchaseType() ?: return
+        val pendingType = try { PremiumType.valueOf(pendingTypeName) } catch (e: Exception) { return }
+
+        billingService.setPurchaseId(pendingId)
+
+        if (billingService.checkTelegramPayment()) {
+            activatePremium(pendingType)
+            settingsRepository.clearPendingPurchase()
+        } else {
+            // Продолжаем polling
+            viewModelScope.launch {
+                pollTelegramPayment(pendingType)
+            }
+        }
     }
 
     private suspend fun activatePremium(type: PremiumType) {
@@ -366,10 +395,11 @@ class MainViewModel(
     }
 
     fun setVolume(volume: Float) {
+        val clamped = if (_state.value.isPremium) volume else volume.coerceAtMost(PremiumConfig.freeLimits.maxVolume)
         _state.update {
-            it.copy(audioSettings = it.audioSettings.copy(volume = volume))
+            it.copy(audioSettings = it.audioSettings.copy(volume = clamped))
         }
-        viewModelScope.launch { settingsRepository.saveVolume(volume) }
+        viewModelScope.launch { settingsRepository.saveVolume(clamped) }
         checkHighVolumeWarning()
         updateServiceSettings()
     }
@@ -383,6 +413,9 @@ class MainViewModel(
     }
 
     fun setEqualizerBand(band: Int, gain: Float) {
+        val isPremium = _state.value.isPremium
+        val maxBand = if (isPremium) 4 else PremiumConfig.freeLimits.maxEqBands - 1
+        if (band > maxBand) return
         val newEq = when (band) {
             0 -> _state.value.equalizerSettings.copy(band60Hz = gain)
             1 -> _state.value.equalizerSettings.copy(band250Hz = gain)
@@ -402,6 +435,8 @@ class MainViewModel(
     }
 
     fun applyPreset(preset: Preset) {
+        val allowed = if (_state.value.isPremium) Preset.entries else PremiumConfig.freeLimits.allowedPresets
+        if (preset !in allowed) return
         _state.update {
             it.copy(
                 equalizerSettings = preset.equalizer,
@@ -414,6 +449,7 @@ class MainViewModel(
     }
 
     fun toggleNoiseSuppression() {
+        if (!_state.value.isPremium) return
         val newValue = !_state.value.isNoiseSuppressionEnabled
         _state.update { it.copy(isNoiseSuppressionEnabled = newValue) }
         viewModelScope.launch { settingsRepository.saveNoiseSuppression(newValue) }
